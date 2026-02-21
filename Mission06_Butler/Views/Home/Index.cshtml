@@ -1,11 +1,47 @@
-﻿@{
-    // Change this to match the H1 tag below for consistency
-    ViewData["Title"] = "The Joel Hilton Film Collection";
+﻿@model List<Mission06_Butler.Models.Movie>
+@{
+    ViewData["Title"] = "Movie Collection";
 }
 
 <div class="text-center">
-    <h1 class="display-4">The Joel Hilton Film Collection</h1>
-    <br />
+    <h1 class="display-4">Joel's Movie Collection</h1>
+</div>
 
-    <img src="~/images/hilton.jpg" alt="Joel Hilton" />
+<div class="container mt-4">
+    <table class="table table-bordered table-striped">
+        <thead class="fw-bold bg-light">
+            <tr>
+                <td>Category</td>
+                <td>Title</td>
+                <td>Year</td>
+                <td>Director</td>
+                <td>Rating</td>
+                <td>Edited</td>
+                <td>Lent To</td>
+                <td>Copied to Plex</td>
+                <td>Notes</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.Category</td>
+                    <td>@x.Title</td>
+                    <td>@x.Year</td>
+                    <td>@x.Director</td>
+                    <td>@x.Rating</td>
+                    <td>@(x.Edited ? "Yes" : "No")</td>
+                    <td>@x.LentTo</td>
+                    <td>@(x.CopiedToPlex ? "Yes" : "No")</td>
+                    <td>@x.Notes</td>
+
+                    <td><a class="btn btn-info btn-sm" asp-controller="Home" asp-action="Edit" asp-route-id="@x.MovieId">Edit</a></td>
+                    <td><a class="btn btn-danger btn-sm" asp-controller="Home" asp-action="Delete" asp-route-id="@x.MovieId">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
