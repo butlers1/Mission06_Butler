@@ -3,36 +3,39 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mission06_Butler.Models
 {
+    [Table("Movies")] // Ensures it maps to the "Movies" table in Joel's DB [cite: 28]
     public class Movie
     {
         [Key]
-        [Required]
-        public int MovieId { get; set; }
+        public int? MovieId { get; set; }
 
-        [Required]
-        public string Category { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Please select a category")]
+        public int? CategoryId { get; set; }
 
-        [Required]
+        [ForeignKey("CategoryId")]
+        public Category? Category { get; set; }
+
+        [Required(ErrorMessage = "Title field required")]
         public string Title { get; set; } = string.Empty;
 
-        [Required]
+        // Making this int? allows the [Required] tag to catch empty inputs correctly
+        [Required(ErrorMessage = "Year field required")]
         [Range(1888, int.MaxValue, ErrorMessage = "Year must be 1888 or later")]
-        public int Year { get; set; }
+        public int? Year { get; set; }
 
-        [Required]
-        public string Director { get; set; } = string.Empty;
+        public string? Director { get; set; }
 
-        [Required]
-        public string Rating { get; set; } = string.Empty;
+        public string? Rating { get; set; }
 
-        [Required]
-        [Column("Edited")] // Added to match the provided database schema
-        public bool Edited { get; set; }
+        [Required(ErrorMessage = "Please indicate if the movie has been edited")]
+        [Column("Edited")]
+        public bool? Edited { get; set; }
 
         public string? LentTo { get; set; }
 
-        [NotMapped] // Ignore this property in EF mapping
-        public bool CopiedToPlex { get; set; }
+        [Required(ErrorMessage = "Please indicate if the movie is copied to Plex")]
+        [Column("CopiedToPlex")]
+        public bool? CopiedToPlex { get; set; }
 
         [MaxLength(25)]
         public string? Notes { get; set; }

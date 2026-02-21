@@ -6,14 +6,20 @@
 <h1>Movie Collection Form</h1>
 
 <form method="post">
-    @* Hidden field is required so the controller knows which ID to update *@
     <input type="hidden" asp-for="MovieId" />
 
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="mb-3">
-        <label asp-for="Category">Category:</label>
-        <input asp-for="Category" class="form-control" />
+        <label asp-for="CategoryId">Category:</label>
+        @* Dropdown pulls names from ViewBag, but saves the ID to the database *@
+        <select asp-for="CategoryId" class="form-select">
+            <option value="">Select a Category</option>
+            @foreach (var c in ViewBag.Categories)
+            {
+                <option value="@c.CategoryId">@c.CategoryName</option>
+            }
+        </select>
     </div>
 
     <div class="mb-3">
@@ -39,12 +45,15 @@
             <option value="PG">PG</option>
             <option value="PG-13">PG-13</option>
             <option value="R">R</option>
+            <option value="NR">NR</option>
+            <option value="UR">UR</option>
         </select>
     </div>
 
     <div class="mb-3">
         <label asp-for="Edited">Edited:</label>
         <select asp-for="Edited" class="form-select">
+            <option value="">Select an Option</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
         </select>
@@ -58,6 +67,7 @@
     <div class="mb-3">
         <label asp-for="CopiedToPlex">Copied to Plex:</label>
         <select asp-for="CopiedToPlex" class="form-select">
+            <option value="">Select an Option</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
         </select>
