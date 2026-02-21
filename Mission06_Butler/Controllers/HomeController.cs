@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mission06_Butler.Models;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mission06_Butler.Controllers
 {
@@ -15,12 +14,13 @@ namespace Mission06_Butler.Controllers
             _context = temp;
         }
 
-        // Updated to pass the list of movies to the view
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var movies = await _context.Movies
+            // .Include(x => x.Category) joins the Movies and Categories tables
+            var movies = _context.Movies
+                .Include(x => x.Category)
                 .OrderBy(x => x.Title)
-                .ToListAsync();
+                .ToList();
 
             return View(movies);
         }
@@ -33,6 +33,11 @@ namespace Mission06_Butler.Controllers
         [HttpGet]
         public IActionResult MovieForm()
         {
+            // We pass the list of categories to the view for the dropdown menu
+            ViewBag.Categories = _context.Categories
+                .OrderBy(x => x.CategoryName)
+                .ToList();
+
             return View();
         }
 
@@ -43,23 +48,30 @@ namespace Mission06_Butler.Controllers
             {
                 _context.Movies.Add(response);
                 _context.SaveChanges();
-                return RedirectToAction("Index"); // Redirect to the list after adding
+                return RedirectToAction("Index");
             }
+
+            // If validation fails, we must reload the categories for the dropdown
+            ViewBag.Categories = _context.Categories
+                .OrderBy(x => x.CategoryName)
+                .ToList();
 
             return View(response);
         }
 
-        // NEW: GET action to load the Edit form
         [HttpGet]
         public IActionResult Edit(int id)
         {
             var recordToEdit = _context.Movies
                 .Single(x => x.MovieId == id);
 
-            return View("MovieForm", recordToEdit); // Reusing the same form view
+            ViewBag.Categories = _context.Categories
+                .OrderBy(x => x.CategoryName)
+                .ToList();
+
+            return View("MovieForm", recordToEdit);
         }
 
-        // NEW: POST action to save the changes
         [HttpPost]
         public IActionResult Edit(Movie updatedInfo)
         {
@@ -71,10 +83,13 @@ namespace Mission06_Butler.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Categories = _context.Categories
+                .OrderBy(x => x.CategoryName)
+                .ToList();
+
             return View("MovieForm", updatedInfo);
         }
 
-        // NEW: GET action to show the Delete confirmation
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -84,7 +99,6 @@ namespace Mission06_Butler.Controllers
             return View(recordToDelete);
         }
 
-        // NEW: POST action to perform the deletion
         [HttpPost]
         public IActionResult Delete(Movie movie)
         {
