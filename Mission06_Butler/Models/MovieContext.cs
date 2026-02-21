@@ -8,13 +8,14 @@ namespace Mission06_Butler.Models
         {
         }
 
-        // Registers the Categories table so you can use .Include() in the controller
+        // Db for category and movie table
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Movie> Movies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            // fills the category table with the following data
             mb.Entity<Category>().HasData(
                 new Category { CategoryId = 1, CategoryName = "Action" },
                 new Category { CategoryId = 2, CategoryName = "Comedy" },

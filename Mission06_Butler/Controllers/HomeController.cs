@@ -4,6 +4,7 @@ using Mission06_Butler.Models;
 using System.Linq;
 
 namespace Mission06_Butler.Controllers
+    // Main controller for the application, handles routing and logic for pages
 {
     public class HomeController : Controller
     {
@@ -16,7 +17,7 @@ namespace Mission06_Butler.Controllers
 
         public IActionResult Index()
         {
-            // .Include(x => x.Category) joins the Movies and Categories tables
+            // Include category information and order movies by title
             var movies = _context.Movies
                 .Include(x => x.Category)
                 .OrderBy(x => x.Title)
@@ -30,10 +31,11 @@ namespace Mission06_Butler.Controllers
             return View();
         }
 
+        // GET method for the movie form, used for creating/editing movies
         [HttpGet]
         public IActionResult MovieForm()
         {
-            // We pass the list of categories to the view for the dropdown menu
+            // Pass the list of categories to the view for the dropdown menu
             ViewBag.Categories = _context.Categories
                 .OrderBy(x => x.CategoryName)
                 .ToList();
@@ -44,6 +46,7 @@ namespace Mission06_Butler.Controllers
         [HttpPost]
         public IActionResult MovieForm(Movie response)
         {
+            // validate data
             if (ModelState.IsValid)
             {
                 _context.Movies.Add(response);
@@ -51,7 +54,7 @@ namespace Mission06_Butler.Controllers
                 return RedirectToAction("Index");
             }
 
-            // If validation fails, we must reload the categories for the dropdown
+            // If validation fails, reload the categories for the dropdown
             ViewBag.Categories = _context.Categories
                 .OrderBy(x => x.CategoryName)
                 .ToList();
@@ -62,6 +65,7 @@ namespace Mission06_Butler.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Find the movie record to edit based on ID
             var recordToEdit = _context.Movies
                 .Single(x => x.MovieId == id);
 
@@ -75,6 +79,7 @@ namespace Mission06_Butler.Controllers
         [HttpPost]
         public IActionResult Edit(Movie updatedInfo)
         {
+            // Validate the updated movie information
             if (ModelState.IsValid)
             {
                 _context.Update(updatedInfo);
@@ -93,6 +98,7 @@ namespace Mission06_Butler.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            // Find the movie record to delete based on ID
             var recordToDelete = _context.Movies
                 .Single(x => x.MovieId == id);
 
@@ -102,6 +108,7 @@ namespace Mission06_Butler.Controllers
         [HttpPost]
         public IActionResult Delete(Movie movie)
         {
+            // Remove the movie record from the db, and save changes
             _context.Movies.Remove(movie);
             _context.SaveChanges();
 

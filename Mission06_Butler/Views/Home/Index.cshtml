@@ -6,7 +6,7 @@
 <div class="text-center">
     <h1 class="display-4">Joel's Movie Collection</h1>
 </div>
-
+@* Create Table with columns *@
 <div class="container mt-4">
     <table class="table table-bordered table-striped">
         <thead class="fw-bold bg-light">
@@ -25,6 +25,7 @@
             </tr>
         </thead>
         <tbody>
+            @* Type in each column or whats allowed *@
             @foreach (var x in Model)
             {
                 <tr>
@@ -37,7 +38,7 @@
                     <td>@x.LentTo</td>
                     <td>@(x.CopiedToPlex == true ? "Yes" : "No")</td>
                     <td>@x.Notes</td>
-
+                    @* Edit and delete movies *@
                     <td><a class="btn btn-info btn-sm" asp-controller="Home" asp-action="Edit" asp-route-id="@x.MovieId">Edit</a></td>
                     <td><a class="btn btn-danger btn-sm" asp-controller="Home" asp-action="Delete" asp-route-id="@x.MovieId">Delete</a></td>
                 </tr>

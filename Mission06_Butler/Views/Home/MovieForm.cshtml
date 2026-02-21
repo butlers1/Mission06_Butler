@@ -11,8 +11,8 @@
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="mb-3">
+        @* Drop down for category selection *@
         <label asp-for="CategoryId">Category:</label>
-        @* Dropdown pulls names from ViewBag, but saves the ID to the database *@
         <select asp-for="CategoryId" class="form-select">
             <option value="">Select a Category</option>
             @foreach (var c in ViewBag.Categories)
@@ -21,7 +21,7 @@
             }
         </select>
     </div>
-
+    @* Areas on form for user to fill out *@
     <div class="mb-3">
         <label asp-for="Title">Title:</label>
         <input asp-for="Title" class="form-control" />
@@ -36,7 +36,7 @@
         <label asp-for="Director">Director:</label>
         <input asp-for="Director" class="form-control" />
     </div>
-
+    @* choose from a list of ratings *@
     <div class="mb-3">
         <label asp-for="Rating">Rating:</label>
         <select asp-for="Rating" class="form-select">
@@ -49,7 +49,7 @@
             <option value="UR">UR</option>
         </select>
     </div>
-
+    @* choose yes/no *@
     <div class="mb-3">
         <label asp-for="Edited">Edited:</label>
         <select asp-for="Edited" class="form-select">
@@ -63,7 +63,7 @@
         <label asp-for="LentTo">Lent To:</label>
         <input asp-for="LentTo" class="form-control" />
     </div>
-
+    @* choose yes/no *@
     <div class="mb-3">
         <label asp-for="CopiedToPlex">Copied to Plex:</label>
         <select asp-for="CopiedToPlex" class="form-select">
@@ -72,7 +72,7 @@
             <option value="false">No</option>
         </select>
     </div>
-
+    @* open box for writing notes *@
     <div class="mb-3">
         <label asp-for="Notes">Notes:</label>
         <textarea asp-for="Notes" class="form-control" maxlength="25"></textarea>
